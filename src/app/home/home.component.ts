@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {KeycloakService} from 'keycloak-angular';
+import {KeycloakProfile} from 'keycloak-js';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public userDetails: KeycloakProfile;
 
-  ngOnInit(): void {
+  constructor(protected keycloakService: KeycloakService) {
   }
 
+  ngOnInit(): void {
+    try {
+      this.keycloakService
+        .getKeycloakInstance()
+        .loadUserProfile()
+        .success(profile => this.userDetails = profile);
+    } catch (e) {
+      console.log('Failed to load user details', e);
+    }
+  }
+
+  public logOut(): void {
+    this.keycloakService
+      .logout('http://localhost:4200/home')
+      .then(value => console.log(value));
+  }
 }

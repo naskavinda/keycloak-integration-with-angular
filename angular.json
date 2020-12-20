@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "keycloak-intigration"
+    }
+  },
+  "defaultProject": "keycloak-intigration",
+  "cli": {
+    "analytics": false
+  }
 }
